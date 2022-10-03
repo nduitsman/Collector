@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}Tools{% endblock %}
+
+{% block content %}
+
+<h1 class="title pt-5">Tools Wishlist</h1>
+<form class="mb-5" method="get">
+  <div class="field has-addons">
+    <div class="control">
+      <!--  Our input will search by name of artist  -->
+      <input class="input" type="text" name="name" placeholder="name" />
+    </div>
+    <div class="control">
+      <input class="button is-success" type="submit" value="Search" />
+    </div>
+  </div>
+  <!--  This anchor tag will redirect back to artist list without a query param -->
+  <a class="button is-dark" href="{% url 'tools' %}">Clear Search</a>
+</form>
+<div class="gallery">
+    {% for tool in tools %}
+      <div class="card">
+        <a href="/tools/{{tool.id}}/">
+          <div class="card-image">
+            <figure class="image is-square">
+              <img src="{{tool.image}}" alt="{{tool.name}}" />
+            </figure>
+          </div>
+          <div class="card-header">
+            <div>
+                <p class="card-header-title">{{tool.name}}</p>
+            </div>
+            <div>
+                <p class="card-header-title">${{tool.price}}</p>
+            </div>
+          </div>
+        </a>
+      </div>
+    {% empty %}
+    <article class="message">
+      <div class="message-header">
+        <p>No search results found</p>
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+{% endblock %}

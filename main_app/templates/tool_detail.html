@@ -1,0 +1,29 @@
+{% extends 'base.html' %} 
+{% block title %} {{tool.name}} {% endblock %}
+{% block content %}
+<div class='detailsWrapper'>
+    <div class="detail__name">
+        <h1 class="title">{{tool.name}} - ${{tool.price}}</h1>
+    </div>
+    <div class="detail__img">
+        <img src="{{tool.image}}" alt="{{tool.name}}" />
+    </div>
+    <div class="detail__about">
+        <p>{{tool.description}}</p>
+    </div>
+    <div class="detail__container">
+        <div class="buttons">
+            <a href="{% url 'tool_update' tool.pk %}" class="button is-info">
+                <span class="icon">
+                    <i class="fas fa-edit"></i>
+                </span>
+            </a>
+            <a href="{% url 'tool_delete' tool.pk %}" class="button is-danger">
+                <span class="icon">
+                    <i class="fas fa-trash-alt"></i>
+                </span>
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
