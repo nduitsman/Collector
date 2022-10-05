@@ -1,0 +1,35 @@
+{% extends 'base.html' %} 
+{% block title %}
+Wishlist
+{% endblock %}
+{% block content %}
+<div class="home__wishlists">
+    
+    {% for wishlist in wishlists %}
+
+        <div class="wishlist mb-5">
+            <h3 class="title is-3 has-text-success">{{wishlist.name}}</h3>
+            <hr />
+
+            {% for tool in wishlist.tools.all %}
+
+                <div class="tool">
+                    <span>{{forloop.counter}}. </span>
+                    <span><b>{{tool.name}}</b></span>
+                    <span> - ${{tool.price}}
+                        <a href="{% url 'wishlist_tool_assoc' wishlist.pk tool.pk %}?assoc=remove" class="button is-danger is-outlined">
+                            <span class="icon is-small">
+                                <i class="fas fa-times"></i>
+                            </span>
+                        </a>
+                    </span>
+                </div>
+
+            {% endfor %}
+        </div>
+    {% empty %} 
+        <div class="wishlist mb-5">"There are no tools in your wishlist"</div>
+    {% endfor %}
+
+</div>
+{% endblock %}

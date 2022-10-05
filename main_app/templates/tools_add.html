@@ -3,9 +3,9 @@
 {% block content %}
 <h1>Add a new tool to your wishlist!</h1>
 
-<form method="post">
+<form method="post" class='formAddItem'>
   {% csrf_token %} 
-  {{form.as_p}} 
+  {{form.as_table}} 
   <input type="submit" value="Submit" />
 </form>
 

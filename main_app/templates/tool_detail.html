@@ -11,6 +11,83 @@
     <div class="detail__about">
         <p>{{tool.description}}</p>
     </div>
+
+    <span>
+        <div class="dropdown">
+          <div class="dropdown-trigger">
+            <button
+              class="button"
+              aria-haspopup="true"
+              aria-controls="dropdown-menu"
+            >
+              <span>Add to Wishlist</span>
+              <span class="icon is-small">
+                <i class="fas fa-angle-down" aria-hidden="true"></i>
+              </span>
+            </button>
+          </div>
+          <div class="dropdown-menu" id="dropdown-menu" role="menu">
+            <div class="dropdown-content">
+              {% for wishlist in wishlists %}
+          <!-- each playlist becomes a drop
+          down item with the ids needed to add to the join table  -->
+              <a
+                href="{% url 'wishlist_tool_assoc' wishlist.pk tool.pk %}?assoc=add"
+                class="dropdown-item"
+              >
+                {{wishlist.name}}
+              </a>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </span>
+
+    <form class="mb-5" action="{% url 'review_create' tool.pk %}" method="post">
+        {% csrf_token %}
+        <div class="formReview">
+            <div class="control">
+                <input
+                    class="input"
+                    type="text"
+                    name="title"
+                    placeholder="Title"
+                    required
+                />
+            </div>
+            <div class="formReviewBody">
+                <textarea
+                    class="input"
+                    type="text"
+                    name="body"
+                    placeholder="Leave your review!"
+                    min="0"
+                    required
+                /></textarea>
+            </div>
+            <div class="control">
+                <input class="button is-primary" type="submit" value="Add Review" />
+            </div>
+        </div>
+    </form>
+    <div class="detail__songs mb-5">
+        <h3 class="title is-3">Reviews</h3>
+
+        {% for review in tool.reviews.all %}
+            <div class="review">
+                <span><b>{{review.title}}</b></span>
+                <p>{{review.body}}</p>
+                <hr>
+            </div>
+        {% empty %}
+            <article class="message">
+                <div class="message-header">
+                    <p>No Reviews Available</p>
+                </div>
+            </article>
+
+        {% endfor %}
+    </div>
     <div class="detail__container">
         <div class="buttons">
             <a href="{% url 'tool_update' tool.pk %}" class="button is-info">
