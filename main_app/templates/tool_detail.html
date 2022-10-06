@@ -31,7 +31,7 @@
             <div class="dropdown-content">
                 {% for wishlist in wishlists %}
                      
-                    {% if wishlist.user.username == 'nduitsman' %}
+                    {% if wishlist.user.username == user.username %}
                     <a href="{% url 'wishlist_tool_assoc' wishlist.pk tool.pk %}?assoc=add" class="dropdown-item">
                             {{wishlist.name}}
                     </a>
