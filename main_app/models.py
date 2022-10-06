@@ -18,7 +18,7 @@ class Review(models.Model):
     title = models.CharField(max_length = 250)
     body = models.TextField(max_length = 1000)
     tool = models.ForeignKey(Tool, on_delete=models.CASCADE, related_name = 'reviews')
-
+    
     def __str__(self):
         return self.title
     
@@ -26,7 +26,8 @@ class Wishlist(models.Model):
     name = models.CharField(max_length=150)
     tools = models.ManyToManyField(Tool)
     # user = models.ForeignKey(User, on_delete=models.CASCADE, related_name = 'wishlist', to_field='username')
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name = 'wishlist', default=1)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name = 'wishlist')
+    
     def __str__(self):
         return self.name
         

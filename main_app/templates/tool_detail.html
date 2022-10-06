@@ -1,6 +1,7 @@
 {% extends 'base.html' %} 
 {% block title %} {{tool.name}} {% endblock %}
 {% block content %}
+
 <div class='detailsWrapper'>
     <div class="detail__name">
         <h1 class="title">{{tool.name}} - ${{tool.price}}</h1>
@@ -28,15 +29,13 @@
           </div>
           <div class="dropdown-menu" id="dropdown-menu" role="menu">
             <div class="dropdown-content">
-              {% for wishlist in wishlists %}
-          <!-- each playlist becomes a drop
-          down item with the ids needed to add to the join table  -->
-              <a
-                href="{% url 'wishlist_tool_assoc' wishlist.pk tool.pk %}?assoc=add"
-                class="dropdown-item"
-              >
-                {{wishlist.name}}
-              </a>
+                {% for wishlist in wishlists %}
+                     
+                    {% if wishlist.user.username == 'nduitsman' %}
+                    <a href="{% url 'wishlist_tool_assoc' wishlist.pk tool.pk %}?assoc=add" class="dropdown-item">
+                            {{wishlist.user}}
+                    </a>
+                    {% endif %}
               {% endfor %}
             </div>
           </div>

@@ -11,6 +11,7 @@ from django.contrib.auth.forms import UserCreationForm
 # Auth
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
+from django.contrib.auth.models import User
 
 
 
@@ -21,9 +22,32 @@ class Home(TemplateView):
     
     def get_context_data(self, ** kwargs):
         context = super().get_context_data(**kwargs)
-        context['wishlists'] = Wishlist.objects.filter(user = self.request.user)
+        name = self.request.GET.get("name")
+        if name != None:
+            context["wishlists"] = Wishlist.objects.filter(
+                name__icontains=name, user=self.request.user)
+            context["header"] = f"Searching for {name}"
+        else:
+            context["wishlists"] = Wishlist.objects.filter(user=self.request.user)
+            context["header"] = "Trending Tools"
         return context
+    
+@method_decorator(login_required, name='dispatch')
+class WishlistCreate(View):
+    def post(self, request, pk):
+        name = request.POST.get("name")
+        user=User.objects.get(id=request.user.id)
+        print(request.user.id)
+        Wishlist.objects.create(name=name, user=user)
+        return redirect('wishlists')
+    
 
+@method_decorator(login_required, name='dispatch')
+class WishlistDelete(DeleteView):
+    model = Wishlist
+    template_name = 'wishlist_delete.html'
+    success_url = '/'
+    
 class About(TemplateView):
     template_name = "about.html"
 
@@ -33,6 +57,7 @@ class Tools(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)      
         name = self.request.GET.get("name")
+
         if name != None:
             context["tools"] = Tool.objects.filter(name__icontains=name)
             context["header"] = f"Searching for {name}"
@@ -46,8 +71,15 @@ class ToolsAdd(CreateView):
     model = Tool
     fields = ['name', 'image', 'price', 'description']
     template_name = 'tools_add.html'
+    
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super(ToolsAdd, self).form_valid(form)
+
     def get_success_url(self):
+        print(self.kwargs)
         return reverse('tool_detail', kwargs={'pk': self.object.pk})
+
 
 class ToolDetail(DetailView):
     model = Tool
@@ -80,6 +112,8 @@ class ReviewCreate(View):
         tool = Tool.objects.get(pk=pk)
         Review.objects.create(title=title, body=body, tool=tool)
         return redirect('tool_detail', pk=pk)
+    
+
     
         
 @method_decorator(login_required, name='dispatch')
