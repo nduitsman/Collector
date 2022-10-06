@@ -33,7 +33,7 @@
                      
                     {% if wishlist.user.username == 'nduitsman' %}
                     <a href="{% url 'wishlist_tool_assoc' wishlist.pk tool.pk %}?assoc=add" class="dropdown-item">
-                            {{wishlist.user}}
+                            {{wishlist.name}}
                     </a>
                     {% endif %}
               {% endfor %}
